@@ -1,69 +1,67 @@
 node Place{
     has Name:str; 
     
-    can check with jason entry;
+    can check with Traveller entry;
     
 }
 
 
 :node:Place:can:check {
-    while here.Distance < 200 {
+    # if here.Distance < 65 {
+        travelled_distance = :edge:[self<--];
+        here.Distance += travelled_distance[0].val;
+        print("Travelled distance: ", here.Distance);
         available:list = [self--> ];
-        # if len(avialable) == 0 {
-        #     exit();
-        # }
-        print(available);
-
-        path = input("Select your path: ");
         
-        ed = :edge:[self<--];
-        here.Distance += ed[0].val;
-        print(here.Distance);
+        print("Available destinations: " ,[city.Name for city in available]);
 
-        for item in available {
-            if item.Name == path {
-                print(f"Now you are going to {item.Name}");
-                self = item;
-                break;
-            } else {
-                print("You cannnot go there from here");
-            }
+        destination = input("Select your next destination: ");
+
+        found: bool = False;
+        for item in available{
+            if item.Name == destination.capitalize(){
+                found = True;
+                if here.Distance < 65 {
+                    print(f"Now you will going to {item.Name}");
+                    visit[item];
+                    break;
+                } else {
+                    print("Sorry, you cannot travel that far today.");
+                }
+            } 
         }
-        
-        
-    }
+        if not found {
+            print("Location not found");
+        }    
+    # } else {
+    #     print("Sorry, you cannot travel that far today.");
+    # }
         
 }
 
 
 edge a{
-    has val:int = 20; ##Distance(kilometers)
+    has val:int = 20; #Distance(kilometers)
 }
 
 
-walker jason{
-    has visited_nodes:list = [];
+walker Traveller{
+    has visited_cities:list = [];
     has count:int = 0;
     has Distance:int = 0;
 
-    can strat_from with `root entry { #start form root node
+    can start_from with `root entry { #start form root node
         visit [-->](`?Place);
     } 
 
-    can log_visit with Place exit { #append the visited node from here
-        print("Visiting node : ", here);
-        self.visited_nodes.append(here);
+    can log_visit with Place entry { #append the visited node from here
+        self.visited_cities.append(here);
+        print("Visited cities so far : ", [city.Name for city in self.visited_cities]);
         self.count +=1;
     }
 
-    # can go(destination: Place);
 
 }
-
-# :walker:jason:can:go
-# (destination: Place) {
-#     visit [here --> destination];
-# }
 
 
 
@@ -74,7 +72,7 @@ with entry{
     Galle = Place("Galle");
     Matara = Place("Matara");
 
-    root +:a:+> Start;
+    root +:a:val=0:+> Start;
     Start +:a:val=60:+> Kandy +:a:val=50:+> Place("Nuwara Eliya");
     Kandy +:a:+> Sigiriya;
     Sigiriya +:a:+> Place("Anuradhapura");
@@ -85,6 +83,6 @@ with entry{
     Galle +:a:+> Matara +:a:+> Place("Arugambay");
     Matara +:a:+> Place("Yala");
  
-    wlk_obj = root spawn jason();
-    print(wlk_obj);
+    traveller = root spawn Traveller();
+    # print(traveller);
 }
