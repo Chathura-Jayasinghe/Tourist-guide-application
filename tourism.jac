@@ -13,26 +13,31 @@ node Place{
         print("Travelled distance: ", here.Distance);
         available:list = [self--> ];
         
-        print("Available destinations: " ,[city.Name for city in available]);
-
-        destination = input("Select your next destination: ");
-
         found: bool = False;
-        for item in available{
-            if item.Name == destination.capitalize(){
-                found = True;
-                if here.Distance < 65 {
-                    print(f"Now you will going to {item.Name}");
-                    visit[item];
-                    break;
-                } else {
-                    print("Sorry, you cannot travel that far today.");
-                }
+
+        while not found {
+            print("Available destinations: " ,[city.Name for city in available]);
+
+            destination = input("Select your next destination: ");
+
+            # found: bool = False;
+            for item in available{
+                if item.Name == destination.capitalize(){
+                    found = True;
+                    if here.Distance < 65 {
+                        print(f"Now you will going to {item.Name}");
+                        visit[item];
+                        break;
+                    } else {
+                        print("Sorry, you cannot travel that far today.");
+                    }   
+                } 
+            }
+            if not found {
+                print("Location not found");
             } 
         }
-        if not found {
-            print("Location not found");
-        }    
+   
     # } else {
     #     print("Sorry, you cannot travel that far today.");
     # }

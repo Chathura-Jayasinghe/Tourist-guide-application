@@ -1,0 +1,26 @@
+digraph {
+node [style="filled", shape="ellipse", fillcolor="invis", fontcolor="black"];
+0 -> 1  [label="a(val=0)"];
+1 -> 2  [label="a(val=60)"];
+2 -> 3  [label="a(val=50)"];
+2 -> 4  [label="a(val=20)"];
+4 -> 5  [label="a(val=20)"];
+4 -> 6  [label="a(val=70)"];
+1 -> 7  [label="a(val=50)"];
+7 -> 8  [label="a(val=20)"];
+7 -> 9  [label="a(val=20)"];
+9 -> 10  [label="a(val=20)"];
+9 -> 11  [label="a(val=20)"];
+0 [label="Root()"fillcolor="#FFE9E9"];
+1 [label="Place(Name=&#x27;Colombo&#x27;)"fillcolor="#F0FFF0"];
+2 [label="Place(Name=&#x27;Kandy&#x27;)"fillcolor="#F5E5FF"];
+3 [label="Place(Name=&#x27;Nuwara Eliya&#x27;)"fillcolor="#FFFFE0"];
+4 [label="Place(Name=&#x27;Sigiriya&#x27;)"fillcolor="#FFFFE0"];
+5 [label="Place(Name=&#x27;Anuradhapura&#x27;)"fillcolor="#D2FEFF "];
+6 [label="Place(Name=&#x27;Jaffna&#x27;)"fillcolor="#D2FEFF "];
+7 [label="Place(Name=&#x27;Galle&#x27;)"fillcolor="#F5E5FF"];
+8 [label="Place(Name=&#x27;Hikkaduwa&#x27;)"fillcolor="#FFFFE0"];
+9 [label="Place(Name=&#x27;Matara&#x27;)"fillcolor="#FFFFE0"];
+10 [label="Place(Name=&#x27;Arugambay&#x27;)"fillcolor="#D2FEFF "];
+11 [label="Place(Name=&#x27;Yala&#x27;)"fillcolor="#D2FEFF "];
+}
