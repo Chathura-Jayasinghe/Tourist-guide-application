@@ -8,29 +8,46 @@ node Place{
 
 :node:Place:can:check {
     # if here.Distance < 65 {
-        travelled_distance = :edge:[self<--];
-        here.Distance += travelled_distance[0].val;
-        print("Travelled distance: ", here.Distance);
-        available:list = [self--> ];
+        # travelled_distance = :edge:[self<--];
+        # here.Distance += travelled_distance[0].val;
+        # print("Travelled distance: ", here.Distance);
         
-        found: bool = False;
 
+        downward_available:list = [self-->(`?Place)]; #####show downward nodes
+        upward_available:list = [self<--(`?Place)];#  #####show upward nodes
+        
+        available = downward_available + upward_available;
+
+        found: bool = False;
+        
         while not found {
             print("Available destinations: " ,[city.Name for city in available]);
 
-            destination = input("Select your next destination: ");
-
+            destination = input("Select your next destination: "); ##get input
+    
             # found: bool = False;
             for item in available{
                 if item.Name == destination.capitalize(){
                     found = True;
-                    if here.Distance < 65 {
+                    if here.Distance < 150 {
                         print(f"Now you will going to {item.Name}");
                         visit[item];
+                        print("item",item);
+                        if item in downward_available{
+                            travelled_distance = :edge:[item<--];
+                            here.Distance += travelled_distance[0].val;
+                        }
+                        elif item in upward_available{
+                            travelled_distance = :edge:[item-->];
+                            here.Distance += travelled_distance[0].val;
+                        }
+                        # here.Distance += travelled_distance[0].val;
+                        print("Travelled distance:",here.Distance);
+                        print("Travelled distance:",travelled_distance);
                         break;
                     } else {
                         print("Sorry, you cannot travel that far today.");
-                    }   
+                    }
                 } 
             }
             if not found {
@@ -52,7 +69,6 @@ edge a{
 
 walker Traveller{
     has visited_cities:list = [];
-    has count:int = 0;
     has Distance:int = 0;
 
     can start_from with `root entry { #start form root node
@@ -62,7 +78,6 @@ walker Traveller{
     can log_visit with Place entry { #append the visited node from here
         self.visited_cities.append(here);
         print("Visited cities so far : ", [city.Name for city in self.visited_cities]);
-        self.count +=1;
     }
 
 
