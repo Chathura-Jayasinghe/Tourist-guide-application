@@ -1,10 +1,11 @@
 node Place{
     has Name:str; 
-    
+
     can check with Traveller entry;
     
 }
 
+glob max_distance_can_travel = int(input("how far can you travel today(km): "));
 
 :node:Place:can:check {
     # if here.Distance < 65 {
@@ -24,42 +25,84 @@ node Place{
             print("Available destinations: " ,[city.Name for city in available]);
 
             destination = input("Select your next destination: "); ##get input
-    
+
             # found: bool = False;
+            # for item in available{
+            #     if item.Name == destination.capitalize(){
+            #         found = True;
+            #         if here.Distance < max_distance_can_travel { ####change this point
+            #             print(f"Now you will going to {item.Name}");
+            #             visit[item];
+            #             # print("item",item);
+            #             if item in downward_available{
+            #                 travelled_distance = :edge:[item<--];
+            #                 here.Distance += travelled_distance[0].val; 
+            #             }
+            #             elif item in upward_available{
+            #                 travelled_distance = :edge:[item-->];
+            #                 here.Distance += travelled_distance[0].val;
+            #             }
+            #             if here.Distance < max_distance_can_travel{}
+            #             # here.Distance += travelled_distance[0].val;
+            #             print("Travelled distance:",here.Distance);
+            #             # print("Travelled distance:",travelled_distance);
+            #             break;
+            #         } else {
+            #             print("Sorry, you cannot travel that far today.");
+            #         }
+            #     } 
+            # }
+            found: bool = False;
             for item in available{
                 if item.Name == destination.capitalize(){
-                    found = True;
-                    if here.Distance < 150 {
-                        print(f"Now you will going to {item.Name}");
-                        visit[item];
-                        print("item",item);
+                    found: bool = True;
+            
+                        
                         if item in downward_available{
                             travelled_distance = :edge:[item<--];
-                            here.Distance += travelled_distance[0].val;
+                            here.Distance += travelled_distance[0].val; 
+                            if here.Distance < max_distance_can_travel {
+                                visit[item];
+                                print(f"Now you will going to {item.Name}");
+                                print("Travelled distance:",here.Distance);
+                            }else {
+                                print("Sorry, you cannot travel that far today.");
+                                exit;
+                                # found: bool = False;
+                            }   
                         }
                         elif item in upward_available{
                             travelled_distance = :edge:[item-->];
                             here.Distance += travelled_distance[0].val;
+                            if here.Distance < max_distance_can_travel {
+                                visit[item];
+                                print(f"Now you will going to {item.Name}");
+                                print("Travelled distance:",here.Distance);
+                            }else {
+                                print("Sorry, you cannot travel that far today.");
+                                exit;
+                                # found: bool = False;
+                            } 
                         }
+                        # if here.Distance < max_distance_can_travel{}
                         # here.Distance += travelled_distance[0].val;
-                        print("Travelled distance:",here.Distance);
-                        print("Travelled distance:",travelled_distance);
+                        # print("Travelled distance:",here.Distance);
+                        # print("Travelled distance:",travelled_distance);
                         break;
-                    } else {
-                        print("Sorry, you cannot travel that far today.");
-                    }
+                    } 
                 } 
             }
+
             if not found {
-                print("Location not found");
+                print("Location not found.");
             } 
-        }
+}
    
     # } else {
     #     print("Sorry, you cannot travel that far today.");
     # }
         
-}
+
 
 
 edge a{
@@ -70,6 +113,8 @@ edge a{
 walker Traveller{
     has visited_cities:list = [];
     has Distance:int = 0;
+    has max_distance_can_travel:int=0;
+
 
     can start_from with `root entry { #start form root node
         visit [-->](`?Place);
